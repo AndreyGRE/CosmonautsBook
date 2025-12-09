@@ -1,0 +1,144 @@
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(
+            ellipse at top left,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 70%
+        ),
+        radial-gradient(
+            ellipse at top right,
+            rgba(255, 255, 255, 0.08) 0%,
+            transparent 70%
+        ),
+        radial-gradient(
+            ellipse at bottom left,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 70%
+        ),
+        linear-gradient(135deg, #0c0e22, #1a1c38, #0b0d1f);
+    overflow: hidden;
+    color: #e0e0ff;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Звёзды (с помощью псевдоэлементов и box-shadow) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(
+            1px 1px at 20% 30%,
+            #fff 1px,
+            transparent 1px
+        ),
+        radial-gradient(1px 1px at 40% 70%, #fff 1px, transparent 5px),
+        radial-gradient(1px 1px at 80% 20%, #fff 1px, transparent 7px),
+        radial-gradient(1px 1px at 90% 90%, #fff 1px, transparent 5px),
+        radial-gradient(2px 2px at 10% 10%, #a0a0ff 1px, transparent 8px),
+        radial-gradient(2px 2px at 75% 45%, #ffa0ff 1px, transparent 4px),
+        radial-gradient(1px 1px at 50% 50%, #ffffa0 1px, transparent 5px);
+    background-size: 100% 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+/* Медленное мерцание звёзд */
+body::before {
+    animation: twinkle 12s infinite alternate;
+}
+
+@keyframes twinkle {
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    25% {
+        opacity: 0.85;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    75% {
+        opacity: 0.9;
+    }
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 42px;
+}
+
+.header-text {
+    margin: 10px 0px;
+}
+
+
+.control-block{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.control-block_input{
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #f6f6ff;
+  color: #530b8a; 
+  font-size: 18px; 
+} 
+
+.control-block_buttn{
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: #ffffff 1px solid;
+  background-color: #f6f6ff;
+  color: #530b8a; 
+  font-size: 18px;  
+}
+
+.control-block_buttn--hover:hover{
+  box-sizing: border-box;
+  border: #530b8a 1px solid;
+  background-color: #530b8a;
+  color: #f6f6ff; 
+  transform: translateY(-3px);
+  transition: all 0.1s ease-in-out;
+}
+
+.book{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.book_title{
+  color: #fff;
+  font-size: 42px;
+}
