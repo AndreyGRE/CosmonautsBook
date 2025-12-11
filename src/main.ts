@@ -12,9 +12,19 @@ document.getElementById("name")?.addEventListener("change", (e) => {
 
 // обработка кнопки добавить участника
 document.getElementById("add")?.addEventListener("click", () => {
-    const name = document.getElementById("name")?.value;
-    const job = document.getElementById("job")?.value;
-    const phone = document.getElementById("phone")?.value;
+    const nameInput = document.getElementById(
+        "name"
+    ) as HTMLInputElement | null;
+    const jobInput = document.getElementById("job") as HTMLInputElement | null;
+    const phoneInput = document.getElementById(
+        "phone"
+    ) as HTMLInputElement | null;
+
+    if (!nameInput || !jobInput || !phoneInput) return;
+
+    const name = nameInput.value;
+    const job = jobInput.value;
+    const phone = phoneInput.value;
 
     // валидация полей
     const result = validation(name, job, phone);
@@ -38,9 +48,9 @@ document.getElementById("add")?.addEventListener("click", () => {
     book[newPuople.name[0].toUpperCase()].push(newPuople);
     localStorage.setItem("book", JSON.stringify(book));
 
-    document.getElementById("name").value = "";
-    document.getElementById("job").value = "";
-    document.getElementById("phone").value = "";
+    nameInput.value = "";
+    jobInput.value = "";
+    phoneInput.value = "";
 
     renderBaner("Участник добавлен");
     renderBookElement(book);
@@ -132,7 +142,9 @@ function renderSearchResults(result: any[]) {
 }
 
 // --- обработчик кнопки поиска ---
-document.getElementById("ModalSerch-content-search-panel-btn")?.addEventListener("click", () => {
+document
+    .getElementById("ModalSerch-content-search-panel-btn")
+    ?.addEventListener("click", () => {
         const input = document.getElementById(
             "ModalSerch-content-search-panel-input"
         ) as HTMLInputElement;
@@ -147,86 +159,89 @@ document.getElementById("ModalSerch-content-search-panel-btn")?.addEventListener
     });
 // обработка кнопки закрытия  поиска
 function openEditModal(person: any) {
-                const modal = document.createElement("div");
-                modal.classList.add("ModalEdit");
+    const modal = document.createElement("div");
+    modal.classList.add("ModalEdit");
 
-                const nameInput = document.createElement("input");
-                nameInput.value = person.name;
-                const jobInput = document.createElement("input");
-                jobInput.value = person.job;
-                const phoneInput = document.createElement("input");
-                phoneInput.value = person.phone;
+    const nameInput = document.createElement("input");
+    nameInput.value = person.name;
+    const jobInput = document.createElement("input");
+    jobInput.value = person.job;
+    const phoneInput = document.createElement("input");
+    phoneInput.value = person.phone;
 
-                const saveBtn = document.createElement("button");
-                saveBtn.textContent = "Сохранить";
-                const closeBtn = document.createElement("button");
-                closeBtn.textContent = "Закрыть";
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Сохранить";
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "Закрыть";
 
-                modal.append(nameInput, jobInput, phoneInput, saveBtn, closeBtn);
-                document.body.appendChild(modal);
+    modal.append(nameInput, jobInput, phoneInput, saveBtn, closeBtn);
+    document.body.appendChild(modal);
 
-                // закрытие модалки 
-                closeBtn.addEventListener("click", () => {
-                    modal.remove();
-                });
+    // закрытие модалки
+    closeBtn.addEventListener("click", () => {
+        modal.remove();
+    });
 
-                //  сохранение изменений 
-                saveBtn.addEventListener("click", () => {
-                    const book = JSON.parse(localStorage.getItem("book") || "{}");
-                    const letterOld = person.name[0].toUpperCase();
+    //  сохранение изменений
+    saveBtn.addEventListener("click", () => {
+        const book = JSON.parse(localStorage.getItem("book") || "{}");
+        const letterOld = person.name[0].toUpperCase();
 
-                    if (book[letterOld]) {
-                        // удаляем старый объект
-                        book[letterOld] = book[letterOld].filter(
-                            (p: any) => !(p.name === person.name && p.phone === person.phone)
-                        );
-                        if (book[letterOld].length === 0) delete book[letterOld];
-                    }
+        if (book[letterOld]) {
+            // удаляем старый объект
+            book[letterOld] = book[letterOld].filter(
+                (p: any) =>
+                    !(p.name === person.name && p.phone === person.phone)
+            );
+            if (book[letterOld].length === 0) delete book[letterOld];
+        }
 
-                    //  новый объект
-                    const updatedPerson = {
-                        name: nameInput.value,
-                        job: jobInput.value,
-                        phone: phoneInput.value
-                    };
+        //  новый объект
+        const updatedPerson = {
+            name: nameInput.value,
+            job: jobInput.value,
+            phone: phoneInput.value,
+        };
 
-                    const letterNew = updatedPerson.name[0].toUpperCase();
-                    if (!book[letterNew]) book[letterNew] = [];
-                    book[letterNew].push(updatedPerson);
+        const letterNew = updatedPerson.name[0].toUpperCase();
+        if (!book[letterNew]) book[letterNew] = [];
+        book[letterNew].push(updatedPerson);
 
-                    localStorage.setItem("book", JSON.stringify(book));
+        localStorage.setItem("book", JSON.stringify(book));
 
-                    modal.remove();
+        modal.remove();
 
-                    // обновляем результаты поиска
-                    const SerchInput = document.getElementById(
-                        "ModalSerch-content-search-panel-input"
-                    ) as HTMLInputElement;
+        // обновляем результаты поиска
+        const SerchInput = document.getElementById(
+            "ModalSerch-content-search-panel-input"
+        ) as HTMLInputElement;
 
-                    const searchValue = SerchInput.value.toLowerCase().trim();
-                    const newResult: any[] = [];
-                    for (const key in book) {
-                        for (const p of book[key]) {
-                            if (
-                                p.name.toLowerCase().includes(searchValue) ||
-                                p.phone.toLowerCase().includes(searchValue)
-                            ) {
-                                newResult.push(p);
-                            }
-                        }
-                    }
-
-                    renderSearchResults(newResult);
-                });
+        const searchValue = SerchInput.value.toLowerCase().trim();
+        const newResult: any[] = [];
+        for (const key in book) {
+            for (const p of book[key]) {
+                if (
+                    p.name.toLowerCase().includes(searchValue) ||
+                    p.phone.toLowerCase().includes(searchValue)
+                ) {
+                    newResult.push(p);
+                }
             }
-document.getElementById("ModalSerch-content-close")?.addEventListener("click", () => {
+        }
+
+        renderSearchResults(newResult);
+    });
+}
+document
+    .getElementById("ModalSerch-content-close")
+    ?.addEventListener("click", () => {
         const ModslSerch = document.querySelector(".ModalSerch");
         ModslSerch?.classList.remove("ModalSerch--open");
     });
 
-
 function renderBookElement(book?: any) {
     const container = document.querySelector(".book_element");
+    if (!container) return;
     container.innerHTML = "";
 
     if (!book) return;
@@ -253,7 +268,7 @@ function renderBookElement(book?: any) {
         const itemElNameDivVac = document.createElement("div");
         itemElNameDivVac.classList.add("book_element_item_value");
 
-        document.querySelector(".book_element").appendChild(letterEl);
+        container.appendChild(letterEl);
         letterEl.appendChild(itemElNameDiv);
         letterEl.appendChild(itemElNameDivVac);
 
@@ -266,8 +281,13 @@ function renderBookElement(book?: any) {
                 : " ▼";
         });
         let count = 0;
+        interface Person {
+            name: string;
+            job: string;
+            phone: string;
+        }
         // Список контактов под буквой
-        book[letter].forEach((item) => {
+        book[letter].forEach((item: Person) => {
             count += 1;
             const ItemVac = document.createElement("div");
             ItemVac.classList.add("book_element_item_value_item");
@@ -280,11 +300,11 @@ function renderBookElement(book?: any) {
             itemElPhone.textContent = `Номер: ${item.phone}`;
             const Delete = document.createElement("div");
             Delete.textContent = `🗑`;
-            Delete.addEventListener('click',()=>{
+            Delete.addEventListener("click", () => {
                 deletePerson(item);
-                renderBookElement()
-            })
-            ItemVac.append(itemElName, itemElJob, itemElPhone,Delete);
+                renderBookElement();
+            });
+            ItemVac.append(itemElName, itemElJob, itemElPhone, Delete);
 
             itemElNameDivVac.appendChild(ItemVac);
         });
@@ -294,7 +314,7 @@ function renderBookElement(book?: any) {
     });
 }
 
-// удаление 
+// удаление
 function deletePerson(person: any) {
     const book = JSON.parse(localStorage.getItem("book") || "{}");
     const letter = person.name[0].toUpperCase();
@@ -309,15 +329,18 @@ function deletePerson(person: any) {
 }
 // функция вывода банера
 function renderBaner(text: string) {
-    document.querySelector(".Modal_content").innerHTML = text;
-    document.querySelector(".Modal")?.classList.add("Modal--appears");
+    const modalContent = document.querySelector(".Modal_content");
+    const modal = document.querySelector(".Modal");
+
+    if (!modalContent || !modal) return; // безопасно выходим, если элементов нет
+
+    modalContent.innerHTML = text;
+    modal.classList.add("Modal--appears");
+
     setTimeout(() => {
-        document.querySelector(".Modal_content").innerHTML = text;
-        document.querySelector(".Modal")?.classList.remove("Modal--appears");
+        modal.classList.remove("Modal--appears");
     }, 3000);
 }
-
-function openBook() {}
 
 function validation(
     name: unknown,
