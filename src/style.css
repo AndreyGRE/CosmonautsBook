@@ -1,3 +1,6 @@
+html {
+    overflow: auto;
+}
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -13,6 +16,7 @@
 
 body {
     margin: 0;
+
     min-height: 100vh;
     background: radial-gradient(
             ellipse at top left,
@@ -140,26 +144,61 @@ body::before {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    margin-bottom: 30px;
 }
 
 .book_title {
     color: #fff;
     font-size: 42px;
 }
+.book_element {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
 
-.book-element_key {
-    background-color: red;
+@media (max-width: 768px) {
+    .book_element {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .book_element {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+.book_element_item {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    border: 1px solid #530b8a;
+    gap: 20px;
+    min-height: 40px;
+    padding: 10px;
+    background-color: #1a1c38;
 }
-.book-element_key_item {
-    /* display: none; */
-    background-color: red;
+.book_element_item_value_item {
 }
-
+.book_element_item_key {
+    cursor: pointer;
+}
+.book_element_item_key--hover:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
+.book_element_item_value {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+.book_element_item_value--open {
+    display: flex;
+}
 .Modal {
     position: absolute;
     top: -10px;
@@ -186,4 +225,131 @@ body::before {
     opacity: 1;
     transition: top 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
+}
+
+
+
+.ModalSerch {
+    display: none; /* просто скрыто */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* полупрозрачный черный фон */
+    z-index: 1000;
+}
+
+.ModalSerch--open {
+    display: block; /* показываем */
+}
+
+/* Содержимое окна - всегда такие стили */
+.ModalSerch-content {
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопки */
+.open-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.ModalSerch-content-close {
+    color: #0c0e22;
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+.ModalSerch-content-search-panel{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.ModalSerch-content-search-title{
+    font-size: 32px;
+    color: #0c0e22;
+}
+.ModalSerch-content-search-panel-input{
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #7583aa;
+    border-radius: 5px;
+}
+
+.ModalSerch-content-search-panel-btn{
+    width: 20%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #0a0d27;
+    color: white;
+    cursor: pointer;
+}
+
+.ModalSerch-content-result{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ModalSerch-content-result-item{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: #0b0d1f;
+    border: 1px solid #0b0d1f;
+    border-radius: 5px;
+    padding: 5px;
+}
+.ModalSerch-content-result-item-EditDel{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.ModalSerch-content-result-item-EditDel-Edit{
+    cursor: pointer;
+}
+.ModalSerch-content-result-item-EditDel-Del{
+    cursor: pointer;
+}
+.ModalEdit{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+}
+.ModalEdit input{
+    margin-left: 2px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ModalEdit button{
+    cursor: pointer;
 }
