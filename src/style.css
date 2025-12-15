@@ -96,6 +96,15 @@ body::before {
 .header-text {
     margin: 10px 0px;
 }
+.header-text_link{
+    color: #fff;
+}
+.header-text_link--hover:hover{
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+    color: #26415f; 
+} 
+
 
 .control-block {
     display: flex;
@@ -182,8 +191,7 @@ body::before {
     padding: 10px;
     background-color: #1a1c38;
 }
-.book_element_item_value_item {
-}
+
 .book_element_item_key {
     cursor: pointer;
 }

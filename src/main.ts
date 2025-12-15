@@ -1,5 +1,21 @@
 import "./style.css";
 
+interface Person {
+    name: string;
+    job: string;
+    phone: string;
+}
+
+interface PhoneBook {
+    [key: string]: Person[];
+}
+
+interface ValidationResult {
+    isValid: boolean;
+    normalizedPhone?: string;
+    error?: string;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let book = JSON.parse(localStorage.getItem("book") || "{}");
     renderBookElement(book);
@@ -76,13 +92,13 @@ document.getElementById("search")?.addEventListener("click", () => {
     ModslSerch?.classList.add("ModalSerch--open");
 });
 // --- функция для получения текущего результата поиска ---
-function getCurrentSearchResult(): any[] {
+function getCurrentSearchResult(): Person[] {
     const input = document.getElementById(
         "ModalSerch-content-search-panel-input"
     ) as HTMLInputElement;
     const searchValue = input.value.toLowerCase().trim();
     const book = JSON.parse(localStorage.getItem("book") || "{}");
-    const result: any[] = [];
+    const result: Person[] = [];
 
     for (const key in book) {
         for (const person of book[key]) {
@@ -99,7 +115,7 @@ function getCurrentSearchResult(): any[] {
 }
 
 // --- функция рендера результатов поиска ---
-function renderSearchResults(result: any[]) {
+function renderSearchResults(result: Person[]) {
     const container = document.querySelector(".ModalSerch-content-result")!;
     container.innerHTML = "";
 
@@ -158,7 +174,7 @@ document
         renderSearchResults(result);
     });
 // обработка кнопки закрытия  поиска
-function openEditModal(person: any) {
+function openEditModal(person: Person) {
     const modal = document.createElement("div");
     modal.classList.add("ModalEdit");
 
@@ -190,7 +206,7 @@ function openEditModal(person: any) {
         if (book[letterOld]) {
             // удаляем старый объект
             book[letterOld] = book[letterOld].filter(
-                (p: any) =>
+                (p: Person) =>
                     !(p.name === person.name && p.phone === person.phone)
             );
             if (book[letterOld].length === 0) delete book[letterOld];
@@ -217,7 +233,7 @@ function openEditModal(person: any) {
         ) as HTMLInputElement;
 
         const searchValue = SerchInput.value.toLowerCase().trim();
-        const newResult: any[] = [];
+        const newResult: Person[] = [];
         for (const key in book) {
             for (const p of book[key]) {
                 if (
@@ -239,7 +255,7 @@ document
         ModslSerch?.classList.remove("ModalSerch--open");
     });
 
-function renderBookElement(book?: any) {
+function renderBookElement(book?: PhoneBook) {
     const container = document.querySelector(".book_element");
     if (!container) return;
     container.innerHTML = "";
@@ -281,11 +297,7 @@ function renderBookElement(book?: any) {
                 : " ▼";
         });
         let count = 0;
-        interface Person {
-            name: string;
-            job: string;
-            phone: string;
-        }
+
         // Список контактов под буквой
         book[letter].forEach((item: Person) => {
             count += 1;
@@ -315,13 +327,13 @@ function renderBookElement(book?: any) {
 }
 
 // удаление
-function deletePerson(person: any) {
+function deletePerson(person: Person) {
     const book = JSON.parse(localStorage.getItem("book") || "{}");
     const letter = person.name[0].toUpperCase();
 
     if (book[letter]) {
         book[letter] = book[letter].filter(
-            (p: any) => !(p.name === person.name && p.phone === person.phone)
+            (p: Person) => !(p.name === person.name && p.phone === person.phone)
         );
         if (book[letter].length === 0) delete book[letter];
         localStorage.setItem("book", JSON.stringify(book));
@@ -346,11 +358,7 @@ function validation(
     name: unknown,
     job: unknown,
     phone: unknown
-): {
-    isValid: boolean;
-    normalizedPhone?: string;
-    error?: string;
-} {
+): ValidationResult {
     function isNonEmptyString(val: unknown): val is string {
         return typeof val === "string" && val.trim() !== "";
     }
